@@ -73,6 +73,9 @@
 		8BBC92E82546B69100EA4BC8 /* Weather-Cover */ = {
 			isa = PBXGroup;
 			children = (
+				8BE6AF9D2547052D00DA29A9 /* Model */,
+				8BE6AF9E2547053300DA29A9 /* ModelView */,
+				8BE6AF9F2547053A00DA29A9 /* View */,
 				8BBC92E92546B69100EA4BC8 /* AppDelegate.swift */,
 				8BBC92EB2546B69100EA4BC8 /* SceneDelegate.swift */,
 				8BBC92ED2546B69100EA4BC8 /* ViewController.swift */,
@@ -83,6 +86,27 @@
 				8BBC92F22546B69100EA4BC8 /* Weather_Cover.xcdatamodeld */,
 			);
 			path = "Weather-Cover";
+			sourceTree = "<group>";
+		};
+		8BE6AF9D2547052D00DA29A9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8BE6AF9E2547053300DA29A9 /* ModelView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ModelView;
+			sourceTree = "<group>";
+		};
+		8BE6AF9F2547053A00DA29A9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		A6430A7494496665A4038DFF /* Pods */ = {
@@ -101,12 +125,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8BBC92FD2546B69100EA4BC8 /* Build configuration list for PBXNativeTarget "Weather-Cover" */;
 			buildPhases = (
+				8BE6AF4B2546FDAD00DA29A9 /* Swiftlint Command */,
 				45453147AE40EA2B70A02C11 /* [CP] Check Pods Manifest.lock */,
 				8BBC92E22546B69100EA4BC8 /* Sources */,
 				8BBC92E32546B69100EA4BC8 /* Frameworks */,
 				8BBC92E42546B69100EA4BC8 /* Resources */,
 				39C0A3B912C92B414BB4876A /* [CP] Embed Pods Frameworks */,
-				8BE6AF4B2546FDAD00DA29A9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -202,7 +226,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8BE6AF4B2546FDAD00DA29A9 /* ShellScript */ = {
+		8BE6AF4B2546FDAD00DA29A9 /* Swiftlint Command */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -211,6 +235,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Swiftlint Command";
 			outputFileListPaths = (
 			);
 			outputPaths = (
