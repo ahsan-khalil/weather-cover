@@ -8,5 +8,6 @@ target 'Weather-Cover' do
   # Pods for Weather-Cover
   pod 'Alamofire', '~> 5.2'
   pod 'SwiftLint'
+  pod 'GooglePlaces'
 
 end

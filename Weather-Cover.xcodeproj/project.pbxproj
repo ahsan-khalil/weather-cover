@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B57D7312549550900D58070 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B57D7302549550900D58070 /* Constants.swift */; };
 		8BBC92EA2546B69100EA4BC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC92E92546B69100EA4BC8 /* AppDelegate.swift */; };
 		8BBC92EC2546B69100EA4BC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC92EB2546B69100EA4BC8 /* SceneDelegate.swift */; };
 		8BBC92EE2546B69100EA4BC8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBC92ED2546B69100EA4BC8 /* ViewController.swift */; };
@@ -20,6 +21,7 @@
 /* Begin PBXFileReference section */
 		51276E0F78C7B4ABF02A8BA3 /* Pods-Weather-Cover.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weather-Cover.release.xcconfig"; path = "Target Support Files/Pods-Weather-Cover/Pods-Weather-Cover.release.xcconfig"; sourceTree = "<group>"; };
 		75E3CACC98AE1DC68529ADC7 /* Pods_Weather_Cover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Weather_Cover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B57D7302549550900D58070 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8BBC92E62546B69100EA4BC8 /* Weather-Cover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weather-Cover.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BBC92E92546B69100EA4BC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8BBC92EB2546B69100EA4BC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -52,6 +54,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8B57D72F254954ED00D58070 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				8B57D7302549550900D58070 /* Constants.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		8BBC92DD2546B69100EA4BC8 = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +83,7 @@
 		8BBC92E82546B69100EA4BC8 /* Weather-Cover */ = {
 			isa = PBXGroup;
 			children = (
+				8B57D72F254954ED00D58070 /* Utility */,
 				8BE6AF9D2547052D00DA29A9 /* Model */,
 				8BE6AF9E2547053300DA29A9 /* ModelView */,
 				8BE6AF9F2547053A00DA29A9 /* View */,
@@ -125,12 +136,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8BBC92FD2546B69100EA4BC8 /* Build configuration list for PBXNativeTarget "Weather-Cover" */;
 			buildPhases = (
-				8BE6AF4B2546FDAD00DA29A9 /* Swiftlint Command */,
 				45453147AE40EA2B70A02C11 /* [CP] Check Pods Manifest.lock */,
+				8BE6AF4B2546FDAD00DA29A9 /* Swiftlint Command */,
 				8BBC92E22546B69100EA4BC8 /* Sources */,
 				8BBC92E32546B69100EA4BC8 /* Frameworks */,
 				8BBC92E42546B69100EA4BC8 /* Resources */,
 				39C0A3B912C92B414BB4876A /* [CP] Embed Pods Frameworks */,
+				9DFBA6682F2EC71D833A3E76 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -244,6 +256,23 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
+		9DFBA6682F2EC71D833A3E76 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Weather-Cover/Pods-Weather-Cover-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Weather-Cover/Pods-Weather-Cover-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Weather-Cover/Pods-Weather-Cover-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -251,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B57D7312549550900D58070 /* Constants.swift in Sources */,
 				8BBC92F42546B69100EA4BC8 /* Weather_Cover.xcdatamodeld in Sources */,
 				8BBC92EE2546B69100EA4BC8 /* ViewController.swift in Sources */,
 				8BBC92EA2546B69100EA4BC8 /* AppDelegate.swift in Sources */,
