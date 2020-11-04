@@ -12,25 +12,29 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct WeatherForecast : Codable {
-	let location : WeatherLocation?
-	let current : CurrentWeather?
-	let dailyForecastList : DailyForecastList?
+struct ForecastDayAPIModel : Codable {
+	let date : String?
+	let date_epoch : Int?
+	let day : ForecastDayDetailAPIModel?
+	let astro : AstronomyAPIModel?
+	let hour : [HourForcastDetailAPIModel]?
 
 	enum CodingKeys: String, CodingKey {
-		case location = "location"
-		case current = "current"
-		case dailyForecastList = "forecast"
+
+		case date = "date"
+		case date_epoch = "date_epoch"
+		case day = "day"
+		case astro = "astro"
+		case hour = "hour"
 	}
 
-    init(from decoder: Decoder, isFutureForecastAvaiable:Bool) throws {
+	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
-		location = try values.decodeIfPresent(WeatherLocation.self, forKey: .location)
-		current = try values.decodeIfPresent(CurrentWeather.self, forKey: .current)
-        if isFutureForecastAvaiable {
-            dailyForecastList = try values.decodeIfPresent(DailyForecastList.self, forKey: .dailyForecastList)
-        } else {
-            dailyForecastList = nil
-        }
+		date = try values.decodeIfPresent(String.self, forKey: .date)
+		date_epoch = try values.decodeIfPresent(Int.self, forKey: .date_epoch)
+		day = try values.decodeIfPresent(ForecastDayDetailAPIModel.self, forKey: .day)
+		astro = try values.decodeIfPresent(AstronomyAPIModel.self, forKey: .astro)
+		hour = try values.decodeIfPresent([HourForcastDetailAPIModel].self, forKey: .hour)
 	}
+
 }

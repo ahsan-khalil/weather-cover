@@ -12,17 +12,22 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct DailyForecastList : Codable {
-	let forecastday : [ForecastDay]?
+struct WeatherForecastAPIModel : Codable {
+	let location : WeatherLocationAPIModel?
+	let current : CurrentWeatherAPIModel?
+	let dailyForecastList : DailyForecastListAPIModel?
 
 	enum CodingKeys: String, CodingKey {
-
-		case forecastday = "forecastday"
+		case location = "location"
+		case current = "current"
+		case dailyForecastList = "forecast"
 	}
 
-	init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
-		forecastday = try values.decodeIfPresent([ForecastDay].self, forKey: .forecastday)
+		location = try values.decodeIfPresent(WeatherLocationAPIModel.self, forKey: .location)
+		current = try values.decodeIfPresent(CurrentWeatherAPIModel.self, forKey: .current)
+        dailyForecastList = try values.decodeIfPresent(DailyForecastListAPIModel.self, forKey: .dailyForecastList)
+        
 	}
-
 }

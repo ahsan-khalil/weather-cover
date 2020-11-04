@@ -12,7 +12,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct ForecastDayDetail : Codable {
+struct ForecastDayDetailAPIModel : Codable {
 	let maxtemp_c : Double?
 	let maxtemp_f : Double?
 	let mintemp_c : Double?
@@ -30,7 +30,7 @@ struct ForecastDayDetail : Codable {
 	let daily_chance_of_rain : String?
 	let daily_will_it_snow : Int?
 	let daily_chance_of_snow : String?
-	let condition : WeatherCondition?
+	let condition : WeatherConditionAPIModel?
 	let uv : Double?
 
 	enum CodingKeys: String, CodingKey {
@@ -75,7 +75,7 @@ struct ForecastDayDetail : Codable {
 		daily_chance_of_rain = try values.decodeIfPresent(String.self, forKey: .daily_chance_of_rain)
 		daily_will_it_snow = try values.decodeIfPresent(Int.self, forKey: .daily_will_it_snow)
 		daily_chance_of_snow = try values.decodeIfPresent(String.self, forKey: .daily_chance_of_snow)
-		condition = try values.decodeIfPresent(WeatherCondition.self, forKey: .condition)
+		condition = try values.decodeIfPresent(WeatherConditionAPIModel.self, forKey: .condition)
 		uv = try values.decodeIfPresent(Double.self, forKey: .uv)
 	}
 

@@ -12,32 +12,23 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct Astronomy : Codable {
-	let sunrise : String?
-	let sunset : String?
-	let moonrise : String?
-	let moonset : String?
-	let moon_phase : String?
-	let moon_illumination : String?
+struct WeatherConditionAPIModel : Codable {
+	let text : String?
+	let icon : String?
+	let code : Int?
 
 	enum CodingKeys: String, CodingKey {
 
-		case sunrise = "sunrise"
-		case sunset = "sunset"
-		case moonrise = "moonrise"
-		case moonset = "moonset"
-		case moon_phase = "moon_phase"
-		case moon_illumination = "moon_illumination"
+		case text = "text"
+		case icon = "icon"
+		case code = "code"
 	}
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
-		sunrise = try values.decodeIfPresent(String.self, forKey: .sunrise)
-		sunset = try values.decodeIfPresent(String.self, forKey: .sunset)
-		moonrise = try values.decodeIfPresent(String.self, forKey: .moonrise)
-		moonset = try values.decodeIfPresent(String.self, forKey: .moonset)
-		moon_phase = try values.decodeIfPresent(String.self, forKey: .moon_phase)
-		moon_illumination = try values.decodeIfPresent(String.self, forKey: .moon_illumination)
+		text = try values.decodeIfPresent(String.self, forKey: .text)
+		icon = try values.decodeIfPresent(String.self, forKey: .icon)
+		code = try values.decodeIfPresent(Int.self, forKey: .code)
 	}
 
 }
