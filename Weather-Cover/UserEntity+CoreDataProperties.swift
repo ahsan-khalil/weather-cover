@@ -16,12 +16,12 @@ extension UserEntity {
         return NSFetchRequest<UserEntity>(entityName: "UserEntity")
     }
 
-    @NSManaged public var username: String?
     @NSManaged public var defaultCity: String?
-    @NSManaged public var temperatureUnit: String?
-    @NSManaged public var windSpeedUnit: String?
     @NSManaged public var pressureUnit: String?
+    @NSManaged public var temperatureUnit: String?
     @NSManaged public var timeFormate: String?
+    @NSManaged public var username: String?
+    @NSManaged public var windSpeedUnit: String?
 
 }
 

@@ -16,10 +16,10 @@ extension CurrentWeatherDetailEntity {
         return NSFetchRequest<CurrentWeatherDetailEntity>(entityName: "CurrentWeatherDetailEntity")
     }
 
-    @NSManaged public var timeFetched: Date?
     @NSManaged public var rainChances: Double
-    @NSManaged public var temperatureC: Double
     @NSManaged public var sunRise: Int32
+    @NSManaged public var temperatureC: Double
+    @NSManaged public var timeFetched: Date?
     @NSManaged public var cityDetail: CityDetailEntity?
 
 }

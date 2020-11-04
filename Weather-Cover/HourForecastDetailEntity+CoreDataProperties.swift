@@ -18,8 +18,8 @@ extension HourForecastDetailEntity {
 
     @NSManaged public var dateTime: Date?
     @NSManaged public var rainChances: Double
-    @NSManaged public var windspeedMPH: Double
     @NSManaged public var temperatureC: Double
+    @NSManaged public var windspeedMPH: Double
     @NSManaged public var forecastDetail: ForecastDetailEntity?
 
 }

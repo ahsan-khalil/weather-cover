@@ -16,18 +16,18 @@ extension ForecastDetailEntity {
         return NSFetchRequest<ForecastDetailEntity>(entityName: "ForecastDetailEntity")
     }
 
+    @NSManaged public var humidity: Double
+    @NSManaged public var moonIllumination: Int32
+    @NSManaged public var moonPhase: String?
+    @NSManaged public var moonRise: Int32
+    @NSManaged public var moonSet: Int32
+    @NSManaged public var pressureIN: Double
     @NSManaged public var sunRise: Int32
     @NSManaged public var sunSet: Int32
-    @NSManaged public var moonSet: Int32
-    @NSManaged public var moonRise: Int32
-    @NSManaged public var moonPhase: String?
-    @NSManaged public var moonIllumination: Int32
     @NSManaged public var temperatureC: Double
-    @NSManaged public var humidity: Double
     @NSManaged public var windDirection: String?
-    @NSManaged public var pressureIN: Double
-    @NSManaged public var hourForecastDetail: NSOrderedSet?
     @NSManaged public var cityDetail: CityDetailEntity?
+    @NSManaged public var hourForecastDetail: NSOrderedSet?
 
 }
 

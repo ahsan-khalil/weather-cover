@@ -17,8 +17,8 @@ extension CityDetailEntity {
     }
 
     @NSManaged public var currentDetail: CurrentWeatherDetailEntity?
-    @NSManaged public var forecastDetail: ForecastDetailEntity?
     @NSManaged public var favoriteCity: FavoriteCitiesEntity?
+    @NSManaged public var forecastDetail: ForecastDetailEntity?
 
 }
 

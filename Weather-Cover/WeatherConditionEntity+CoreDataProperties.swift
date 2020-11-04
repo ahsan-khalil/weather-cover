@@ -16,9 +16,9 @@ extension WeatherConditionEntity {
         return NSFetchRequest<WeatherConditionEntity>(entityName: "WeatherConditionEntity")
     }
 
-    @NSManaged public var icon: String?
     @NSManaged public var code: String?
     @NSManaged public var day: String?
+    @NSManaged public var icon: String?
     @NSManaged public var night: String?
 
 }
