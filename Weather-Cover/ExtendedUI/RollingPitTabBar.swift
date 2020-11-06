@@ -41,7 +41,36 @@ extension CGFloat {
     
     let pitCircleDistanceOffset : CGFloat = 7
     
-    
+    //Shadow effect
+    @IBInspectable var shadowOffsetWidth: CGFloat = 0 {
+        didSet {
+            updateShadowOffsets()
+        }
+    }
+    @IBInspectable var shadowOffsetHeight: CGFloat = 0 {
+        didSet {
+            updateShadowOffsets()
+        }
+    }
+    @IBInspectable var shadowColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) {
+        didSet {
+            layer.shadowColor = shadowColor.cgColor
+        }
+    }
+    @IBInspectable var shadowOpacity: Float = 0 {
+        didSet {
+            layer.shadowOpacity = shadowOpacity
+        }
+    }
+    @IBInspectable var shadowRadius: CGFloat = 0 {
+        didSet {
+            layer.shadowRadius = shadowRadius
+        }
+    }
+    func updateShadowOffsets() {
+        layer.shadowOffset = CGSize(width: shadowOffsetWidth, height: shadowOffsetHeight)
+    }
+    // end shadow effect
 
 
     private var barRect : CGRect{
@@ -326,6 +355,12 @@ extension CGFloat {
         
         self.layoutElements(selectedChanged: false)
         
+        layer.shadowOffset = CGSize(width: shadowOffsetWidth, height: shadowOffsetHeight)
+        layer.shadowColor = shadowColor.cgColor
+        layer.shadowOpacity = shadowOpacity
+        layer.shadowRadius = shadowRadius
+        let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: shadowRadius)
+        layer.shadowPath = shadowPath.cgPath
         
     }
     
