@@ -9,5 +9,7 @@ target 'Weather-Cover' do
   pod 'Alamofire', '~> 5.2'
   pod 'SwiftLint'
   pod 'GooglePlaces'
-
+  pod 'DropDown'
+  pod 'Toast-Swift', '~> 5.0.1'
+  
 end
