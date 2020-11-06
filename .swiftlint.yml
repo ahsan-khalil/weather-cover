@@ -18,6 +18,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Weather-Cover/SceneDelegate.swift
   - Weather-Cover/ExtendedUI/RollingPitTabBar.swift
   - Weather-Cover/Model/APIModel
+  - Weather-Cover/DataModel
   - Carthage
   - Pods
   - Source/ExcludedFolder
