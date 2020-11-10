@@ -89,7 +89,9 @@ class CoreDataRepository {
                 }
             }
             // Now Add Details
-            AddCityData(favoriteCityModel: favoriteCityModel)
+            if !isCityExists(cityName: favoriteCityModel.cityName) {
+                AddCityData(favoriteCityModel: favoriteCityModel)
+            }
             userEntity[0].defaultCity = favoriteCityModel.cityName
             do {
                 try context.save()
@@ -120,6 +122,7 @@ class CoreDataRepository {
             let context = RepositoryUtility.getWeatherCoverContainerContext()
             let cityEntity = FavoriteCityEntity.init(context: context)
             cityEntity.cityName = favoriteCityModel.cityName
+            cityEntity.countryName = favoriteCityModel.countryName
             // city detail
             let cityDetailEntity = CityDetailEntity.init(context: context)
             let currentWeatherEntity = CurrentWeatherDetailEntity.init(context: context)
@@ -148,6 +151,12 @@ class CoreDataRepository {
                             hourDetailEntity.rainChances = hourModel.rainChances
                             hourDetailEntity.temperatureC = hourModel.temperatureC
                             hourDetailEntity.windspeedMPH = hourModel.windSpeedMPH
+                            hourDetailEntity.conditionText = hourModel.conditionText
+                            hourDetailEntity.iconName = hourModel.iconName
+                            hourDetailEntity.pressureIN = hourModel.pressureIN
+                            hourDetailEntity.humidity = hourModel.humidity
+                            hourDetailEntity.feelsLikeTempC = hourModel.feelsLikeTempC
+                            hourDetailEntity.windDirection = hourModel.windDirection
                             forecastEntity.addToHourForecastDetail(hourDetailEntity)
                         }
                     } else {
@@ -202,10 +211,51 @@ class CoreDataRepository {
             hourModelList = [HourForecastDetailModel]()
             for hourEntityObj in hourEntityList.array {
                 let hourEntity = hourEntityObj as! HourForecastDetailEntity
-                let hourModel = HourForecastDetailModel(dateTime: hourEntity.dateTime!,
+                // get Currently Units
+                let userData = getUserData()
+                var temperatureFormate = "C"
+                var speedFormate = "MPH"
+                var pressureFormate = "IN"
+                var temperature = hourEntity.temperatureC
+                var windSpeed = hourEntity.windspeedMPH
+                var feelsLikeTemp = hourEntity.feelsLikeTempC
+                var pressure = hourEntity.pressureIN
+                if userData.temperatureUnit! == ConversionUtility.TemperatureUnits.fahrenheit.rawValue {
+                    temperatureFormate = "f"
+                    temperature = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: temperature)
+                    feelsLikeTemp = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: feelsLikeTemp)
+                } else if userData.temperatureUnit! == ConversionUtility.TemperatureUnits.kelvin.rawValue {
+                    temperatureFormate = "k"
+                    temperature = ConversionUtility.convertCelsiusToKelvin(temperatureC: temperature)
+                    feelsLikeTemp = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: feelsLikeTemp)
+                }
+                if userData.pressureUnit! == ConversionUtility.PressureUnits.milibar.rawValue {
+                    pressureFormate = "MB"
+                    pressure = ConversionUtility.convertPressueINtoMB(pressurIN: pressure)
+                } else if userData.pressureUnit! == ConversionUtility.PressureUnits.hectoPascal.rawValue {
+                    pressureFormate = "hPA"
+                    pressure = ConversionUtility.convertPressueINtoHPA(pressurIN: pressure)
+                } else if userData.pressureUnit! == ConversionUtility.PressureUnits.kiloPascal.rawValue {
+                    pressureFormate = "kPA"
+                    pressure = ConversionUtility.convertPressueINtoKPA(pressurIN: pressure)
+                }
+                if userData.windSpeed! == ConversionUtility.SpeedUnits.kilometersPerHour.rawValue {
+                    speedFormate = "KPH"
+                    windSpeed = ConversionUtility.convertMPHtoKPH(mpHSpeed: windSpeed)
+                }
+                var hourModel = HourForecastDetailModel(dateTime: hourEntity.dateTime!,
                                                         rainChances: hourEntity.rainChances,
-                                                        temperatureC: hourEntity.temperatureC,
-                                                        windSpeedMPH: hourEntity.windspeedMPH)
+                                                        temperatureC: temperature,
+                                                        windSpeedMPH: windSpeed,
+                                                        windDirection: hourEntity.windDirection!,
+                                                        feelsLikeTempC: feelsLikeTemp,
+                                                        humidity: hourEntity.humidity,
+                                                        pressureIN: pressure,
+                                                        iconName: hourEntity.iconName!,
+                                                        conditionText: hourEntity.conditionText!)
+                hourModel.temperatureUnit = temperatureFormate
+                hourModel.speedUnit = speedFormate
+                hourModel.pressureUnit = pressureFormate
                 hourModelList?.append(hourModel)
             }
         } else {
@@ -222,17 +272,91 @@ class CoreDataRepository {
                 let forecastDetailEntity =  forecastDetailEntityObj as! ForecastDetailEntity
                 // Get Hour Model List
                 let hourModelList: [HourForecastDetailModel]? = getHourDetailModelList(hourEntityList: forecastDetailEntity.hourForecastDetail)
-                let astronomyModel = AstronomyModel(sunRiseHour: forecastDetailEntity.sunSetHour,
-                                                    sunSetHour: forecastDetailEntity.sunSetHour,
-                                                    sunRiseMin: forecastDetailEntity.sunRiseMin,
-                                                    sunSetMin: forecastDetailEntity.sunsetMin)
-                
-                let forecastModel = ForeCastDetailModel(date: forecastDetailEntity.forecastDate!,
-                                                        minTempC: forecastDetailEntity.minTempC,
-                                                        maxTempC: forecastDetailEntity.maxTempC,
+                let userData = getUserData()
+                var timeFormate = ConversionUtility.TimeFormate.twentyFourHour
+                let sunSetHour = forecastDetailEntity.sunSetHour
+                let sunSetMin = forecastDetailEntity.sunsetMin
+                let sunRiseHour = forecastDetailEntity.sunRiseHour
+                let sunRiseMin = forecastDetailEntity.sunRiseMin
+                if userData.timeFormate! == ConversionUtility.TimeFormate.twelveHour.rawValue {
+                    timeFormate = .twelveHour
+                }
+                var astronomyModel = AstronomyModel(sunRiseHour: sunRiseHour,
+                                                    sunSetHour: sunSetHour,
+                                                    sunRiseMin: sunRiseMin,
+                                                    sunSetMin: sunSetMin)
+                astronomyModel.timeFormate = timeFormate
+                var temperatureFormate = "C"
+                var temperatureMin = forecastDetailEntity.minTempC
+                var temperatureMax = forecastDetailEntity.maxTempC
+                if userData.temperatureUnit! == ConversionUtility.TemperatureUnits.fahrenheit.rawValue {
+                    temperatureFormate = "f"
+                    temperatureMin = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: temperatureMin)
+                    temperatureMax = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: temperatureMax)
+                } else if userData.temperatureUnit! == ConversionUtility.TemperatureUnits.kelvin.rawValue {
+                    temperatureFormate = "k"
+                    temperatureMin = ConversionUtility.convertCelsiusToKelvin(temperatureC: temperatureMin)
+                    temperatureMax = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: temperatureMax)
+                }
+                var forecastModel = ForeCastDetailModel(date: forecastDetailEntity.forecastDate!,
+                                                        minTempC: temperatureMin,
+                                                        maxTempC: temperatureMax,
                                                         hourDetailList: hourModelList,
                                                         astronomyModel: astronomyModel)
+                forecastModel.temperatureFormate = temperatureFormate
                 forecastModelList?.append(forecastModel)
+            }
+        } else {
+            Constants.printError(filename: soureceFileName, errorStr: "Error Occured in reteriving forecast entity detail list")
+        }
+        return forecastModelList
+    }
+    // Convert ForecastEntityList to ForecastModelList specific day
+    public static func getForecastModelList(forecastDetailEntityList: NSOrderedSet?, day: Date) -> [ForeCastDetailModel]? {
+        var forecastModelList: [ForeCastDetailModel]? = nil
+        if let forecastDetailEntityList = forecastDetailEntityList {
+            forecastModelList = [ForeCastDetailModel]()
+            for forecastDetailEntityObj in forecastDetailEntityList.array {
+                let forecastDetailEntity =  forecastDetailEntityObj as! ForecastDetailEntity
+                // Get Hour Model List
+                if let day2 = forecastDetailEntity.forecastDate {
+                    if Constants.isSameDay(day1: day, day2: day2) {
+                        let hourModelList: [HourForecastDetailModel]? = getHourDetailModelList(hourEntityList: forecastDetailEntity.hourForecastDetail)
+                        let userData = getUserData()
+                        var timeFormate = ConversionUtility.TimeFormate.twentyFourHour
+                        let sunSetHour = forecastDetailEntity.sunSetHour
+                        let sunSetMin = forecastDetailEntity.sunsetMin
+                        let sunRiseHour = forecastDetailEntity.sunRiseHour
+                        let sunRiseMin = forecastDetailEntity.sunRiseMin
+                        if userData.timeFormate! == ConversionUtility.TimeFormate.twelveHour.rawValue {
+                            timeFormate = .twelveHour
+                        }
+                        var astronomyModel = AstronomyModel(sunRiseHour: sunRiseHour,
+                                                            sunSetHour: sunSetHour,
+                                                            sunRiseMin: sunRiseMin,
+                                                            sunSetMin: sunSetMin)
+                        astronomyModel.timeFormate = timeFormate
+                        var temperatureFormate = "C"
+                        var temperatureMin = forecastDetailEntity.minTempC
+                        var temperatureMax = forecastDetailEntity.maxTempC
+                        if userData.temperatureUnit! == ConversionUtility.TemperatureUnits.fahrenheit.rawValue {
+                            temperatureFormate = "f"
+                            temperatureMin = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: temperatureMin)
+                            temperatureMax = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: temperatureMax)
+                        } else if userData.temperatureUnit! == ConversionUtility.TemperatureUnits.kelvin.rawValue {
+                            temperatureFormate = "k"
+                            temperatureMin = ConversionUtility.convertCelsiusToKelvin(temperatureC: temperatureMin)
+                            temperatureMax = ConversionUtility.convertCelsiusToFahrenheit(temperatureC: temperatureMax)
+                        }
+                        var forecastModel = ForeCastDetailModel(date: forecastDetailEntity.forecastDate!,
+                                                                minTempC: temperatureMin,
+                                                                maxTempC: temperatureMax,
+                                                                hourDetailList: hourModelList,
+                                                                astronomyModel: astronomyModel)
+                        forecastModel.temperatureFormate = temperatureFormate
+                        forecastModelList?.append(forecastModel)
+                    }
+                }
             }
         } else {
             Constants.printError(filename: soureceFileName, errorStr: "Error Occured in reteriving forecast entity detail list")
@@ -249,18 +373,18 @@ class CoreDataRepository {
                 // Get City Detail
                 if favoriteCityEntity.cityName == cityName {
                     // Get Current Detail
+                    let countryName = favoriteCityEntity.countryName!
                     let currentWeaherModel:CurrentWeatherDetailModel? = getCurrentWeatherModel(
                                                         currentDetailEntity: favoriteCityEntity.cityDetail?.currentDetail)
                     // Get Forecast Detail
                     let forecastModelList: [ForeCastDetailModel]? = getForecastModelList(forecastDetailEntityList: favoriteCityEntity.cityDetail?.forecastDetail)
                     let cityDetailModel = CityDetailModel(currentWeatherDetail: currentWeaherModel, forecastDetail: forecastModelList)
-                    let favoriteCityModel = FavoriteCityModel(cityName: cityName, cityDetail: cityDetailModel)
+                    let favoriteCityModel = FavoriteCityModel(cityName: cityName, countryName: countryName, cityDetail: cityDetailModel)
                     return favoriteCityModel
                 }
             }
         } catch {
             Constants.printError(filename: soureceFileName, errorStr: "Error Occured in reteriving favorite city list")
-
         }
         return nil
     }
@@ -276,10 +400,39 @@ class CoreDataRepository {
                 let currentWeaherModel:CurrentWeatherDetailModel? = getCurrentWeatherModel(
                                                     currentDetailEntity: favoriteCityEntity.cityDetail?.currentDetail)
                 // Get Forecast Detail
+                let cityName = favoriteCityEntity.cityName!
+                let countryName = favoriteCityEntity.countryName!
                 let forecastModelList: [ForeCastDetailModel]? = getForecastModelList(forecastDetailEntityList: favoriteCityEntity.cityDetail?.forecastDetail)
                 let cityDetailModel = CityDetailModel(currentWeatherDetail: currentWeaherModel, forecastDetail: forecastModelList)
-                let favoriteCityModel = FavoriteCityModel(cityName: favoriteCityEntity.cityName!, cityDetail: cityDetailModel)
+                let favoriteCityModel = FavoriteCityModel(cityName: cityName, countryName: countryName, cityDetail: cityDetailModel)
                 favoriteCityModelList.append(favoriteCityModel)
+            }
+        } catch {
+            Constants.printError(filename: soureceFileName, errorStr: "Error Occured in reteriving favorite city list")
+
+        }
+        return favoriteCityModelList
+    }
+    // retreive all city current Data
+    public static func getFavoriteCityEntityList(day: Date, exceptionCityList: [String]) -> [FavoriteCityModel] {
+        var favoriteCityModelList = [FavoriteCityModel]()
+        let context = RepositoryUtility.getWeatherCoverContainerContext()
+        do {
+            let favoriteCityEntityList: [FavoriteCityEntity] = try context.fetch(FavoriteCityEntity.fetchRequest())
+            for favoriteCityEntity in favoriteCityEntityList {
+                if exceptionCityList.firstIndex(of: favoriteCityEntity.cityName!) == nil {
+                    // Get City Detail
+                    // Get Current Detail
+                    let currentWeaherModel:CurrentWeatherDetailModel? = getCurrentWeatherModel(
+                                                        currentDetailEntity: favoriteCityEntity.cityDetail?.currentDetail)
+                    // Get Forecast Detail
+                    let cityName = favoriteCityEntity.cityName!
+                    let countryName = favoriteCityEntity.countryName!
+                    let forecastModelList: [ForeCastDetailModel]? = getForecastModelList(forecastDetailEntityList: favoriteCityEntity.cityDetail?.forecastDetail, day: day)
+                    let cityDetailModel = CityDetailModel(currentWeatherDetail: currentWeaherModel, forecastDetail: forecastModelList)
+                    let favoriteCityModel = FavoriteCityModel(cityName: cityName, countryName: countryName, cityDetail: cityDetailModel)
+                    favoriteCityModelList.append(favoriteCityModel)
+                }
             }
         } catch {
             Constants.printError(filename: soureceFileName, errorStr: "Error Occured in reteriving favorite city list")

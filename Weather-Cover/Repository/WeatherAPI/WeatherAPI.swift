@@ -95,35 +95,4 @@ class WeatherAPI {
                 completionHandler(data)
         }
     }
-    
-    
-    
-    
-    
-    
-//    /// - Parameter value: Pass US Zipcode, UK Postcode, Canada Postalcode, IP address, Latitude/Longitude (decimal degree) or city name.
-//    /// - Parameter date: date for which you want Astronomy
-//    /// - Parameter completionHandler: accepts WeatherForecast optional and returns nothing
-//    static func getAstronomy(date:Date ,value: String,
-//                                    completionHandler: @escaping WeatherForecastHandler) {
-//        let completeBaseUrl = buildCompleteBaseUrl(callMethodName: .astronomy)
-//        guard let completeUrl = URL(string: completeBaseUrl)
-//        else {
-//            completionHandler(nil)
-//            return
-//        }
-//        let formatedDate = ConversionUtility.convertDateToStr(formate: "YYYY-MM-DD", date: date)
-//        AF.request(completeUrl,method: .get,parameters: ["q":value,"days":formatedDate])
-//            .validate()
-//            .responseDecodable(of: WeatherForecast.self) {
-//            (response) in
-//            guard let data = response.value else {
-//                print("Error in converting result to data")
-//                completionHandler(nil)
-//                return
-//            }
-//            completionHandler(data)
-//        }
-//    }
-    
 }

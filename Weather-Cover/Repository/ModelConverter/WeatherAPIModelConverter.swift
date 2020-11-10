@@ -10,8 +10,10 @@ struct WeatherAPIModelConverter {
     static let sourceFileName = #file
     public static func convertToFavoriteCityModel(providedAPIModel: WeatherForecastAPIModel) -> FavoriteCityModel? {
         var favoriteCityModel: FavoriteCityModel? = nil
-        if let locationName = providedAPIModel.location?.name {
-            favoriteCityModel = FavoriteCityModel(cityName: locationName, cityDetail: nil)
+        if let location = providedAPIModel.location {
+            let locationName = location.name!
+            let countryName = location.country!
+            favoriteCityModel = FavoriteCityModel(cityName: locationName, countryName: countryName, cityDetail: nil)
             favoriteCityModel?.cityDetail = convertToCityDetailModel(providedAPIModel: providedAPIModel)
         } else {
             Constants.printError(filename: sourceFileName, errorStr: "Provided API model Has nil Location")
@@ -77,7 +79,6 @@ struct WeatherAPIModelConverter {
             minTempC = dayDetail.mintemp_c!
         }
         let hourDetailModelList = convertToHourForecastDetail(hourDetailAPIList: providedAPIModel.hour)
-        
         forecastDetailModel = ForeCastDetailModel(date: dateTimeFetch, minTempC: minTempC,
                                                   maxTempC: maxTempC,
                                                   hourDetailList: hourDetailModelList,
@@ -96,10 +97,23 @@ struct WeatherAPIModelConverter {
                 let rainChances = Double(hourAPIDetail.chance_of_rain!) ?? 0.0
                 let temperatureC = hourAPIDetail.temp_c!
                 let windSpeedMPH = hourAPIDetail.wind_mph!
+                let windDirection = hourAPIDetail.wind_dir!
+                let feelsLikeTempC = hourAPIDetail.feelslike_c!
+                let humidity = hourAPIDetail.humidity!
+                let pressureIN = hourAPIDetail.pressure_in!
+                var iconName = hourAPIDetail.condition!.icon!
+                iconName = WeatherIconUtility.extractIconAddress(imagePath: iconName)
+                let conditionText = hourAPIDetail.condition!.text!
                 let hourModelDetail = HourForecastDetailModel(dateTime: dateHour,
                                                               rainChances: rainChances,
                                                               temperatureC: temperatureC,
-                                                              windSpeedMPH: windSpeedMPH)
+                                                              windSpeedMPH: windSpeedMPH,
+                                                              windDirection: windDirection,
+                                                              feelsLikeTempC: feelsLikeTempC,
+                                                              humidity: Double(humidity),
+                                                              pressureIN: pressureIN,
+                                                              iconName: iconName,
+                                                              conditionText: conditionText)
                 hourDetailModelList.append(hourModelDetail)
             }
         }
