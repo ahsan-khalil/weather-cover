@@ -36,7 +36,6 @@
 		8B94439D2552EBE9000C39C9 /* RepositoryUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B94439C2552EBE9000C39C9 /* RepositoryUtility.swift */; };
 		8B9444362552FB4B000C39C9 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9444352552FB4B000C39C9 /* UserModel.swift */; };
 		8B9B57142555A40200E5A5A1 /* SearchCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B57132555A40200E5A5A1 /* SearchCityViewController.swift */; };
-		8BB82BEC255014EC00F773DF /* MainRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB82BEB255014EC00F773DF /* MainRepository.swift */; };
 		8BB82BF0255021EB00F773DF /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB82BEF255021EB00F773DF /* WeatherAPI.swift */; };
 		8BB82BF425505FB300F773DF /* ConversionUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB82BF325505FB300F773DF /* ConversionUtility.swift */; };
 		8BB82BF72551424900F773DF /* WaitingActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB82BF62551424900F773DF /* WaitingActivityIndicator.swift */; };
@@ -98,7 +97,6 @@
 		8B94439C2552EBE9000C39C9 /* RepositoryUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryUtility.swift; sourceTree = "<group>"; };
 		8B9444352552FB4B000C39C9 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		8B9B57132555A40200E5A5A1 /* SearchCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCityViewController.swift; sourceTree = "<group>"; };
-		8BB82BEB255014EC00F773DF /* MainRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRepository.swift; sourceTree = "<group>"; };
 		8BB82BEF255021EB00F773DF /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		8BB82BF325505FB300F773DF /* ConversionUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionUtility.swift; sourceTree = "<group>"; };
 		8BB82BF62551424900F773DF /* WaitingActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingActivityIndicator.swift; sourceTree = "<group>"; };
@@ -259,7 +257,6 @@
 				8B168A952555D87700E3B1DB /* ControllerRepository */,
 				8B9B57272555D69500E5A5A1 /* CoreDataRepository */,
 				8BB82BEE255021A600F773DF /* WeatherAPI */,
-				8BB82BEB255014EC00F773DF /* MainRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -527,7 +524,6 @@
 				8B5AED58254FF3B5002B6BBD /* CurrentWeatherAPIModel.swift in Sources */,
 				8B9444362552FB4B000C39C9 /* UserModel.swift in Sources */,
 				8BF1700F255949E100568306 /* FavoriteCityEntity+CoreDataProperties.swift in Sources */,
-				8BB82BEC255014EC00F773DF /* MainRepository.swift in Sources */,
 				8B66D42F255977FB00658EA3 /* ErrorHandler.swift in Sources */,
 				8B57D7312549550900D58070 /* Constants.swift in Sources */,
 				8B5AED57254FF3B5002B6BBD /* WeatherLocationAPIModel.swift in Sources */,
