@@ -8,7 +8,16 @@
 import UIKit
 
 class WeatherDailyCollectionViewCell: ExtendedCollectionViewCell {
-
+    @IBOutlet weak var labelToday: UILabel!
+    @IBOutlet weak var labelCityName: UILabel!
+    @IBOutlet weak var labelMaxTemp: UILabel!
+    @IBOutlet weak var labelMinTemp: UILabel!
+    @IBOutlet weak var labelWeatherCondition: UILabel!
+    @IBOutlet weak var imgWeatherCondition: UIImageView!
+    @IBOutlet weak var labelRainChance: UILabel!
+    @IBOutlet weak var labelWindSpeed: UILabel!
+    @IBOutlet weak var labelSunRiseTime: UILabel!
+    @IBOutlet weak var labelThroughtDay: UILabel!
     static let reuseIdentifier = "WeatherDailyCollectionViewCell"
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -17,5 +26,4 @@ class WeatherDailyCollectionViewCell: ExtendedCollectionViewCell {
     static func nib() -> UINib {
         return UINib(nibName: reuseIdentifier, bundle: nil)
     }
-
 }
