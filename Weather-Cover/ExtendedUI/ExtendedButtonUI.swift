@@ -27,6 +27,5 @@ import UIKit
         layer.shadowRadius = shadowRadius
         let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: shadowRadius)
         layer.shadowPath = shadowPath.cgPath
-        
     }
 }
