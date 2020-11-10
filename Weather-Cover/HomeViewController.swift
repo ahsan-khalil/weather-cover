@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import CoreLocation
+import MapKit
 
 class HomeViewController: UIViewController {
     static let identifier = "HomeViewController"
+    private var locationManager: CLLocationManager?
     enum CurrentMode {
         case homeMode
         case individualCityDetailMode
@@ -40,10 +43,19 @@ class HomeViewController: UIViewController {
         tableViewTodayTemperature.register(HourlyForecastTableViewCell.nib(),
                                            forCellReuseIdentifier: HourlyForecastTableViewCell.reuseIdentifier)
         loadData()
+        setUserLocationData()
     }
     override func viewWillAppear(_ animated: Bool) {
         if viewControllerMode == .individualCityDetailMode {
             self.navigationController?.setNavigationBarHidden(false, animated: false)
+        }
+    }
+    private func setUserLocationData() {
+        locationManager = CLLocationManager()
+        locationManager?.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager?.delegate = self
+            locationManager?.startUpdatingLocation()
         }
     }
     private func setAllDelegation() {
@@ -267,5 +279,30 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                                           hourList[indexPath.row].windSpeedMPH)
         // swiftlint:enable force_cast
         return cell
+    }
+}
+extension HomeViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            print(location.coordinate.latitude, location.coordinate.longitude)
+            let geocoder = CLGeocoder()
+                geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+                    if error != nil {
+                        print("error in reverseGeocode")
+                    }
+                    let placemark = placemarks! as [CLPlacemark]
+                    if placemark.count>0 {
+                        let placemark = placemarks![0]
+                        print(placemark.locality!)
+                        print(placemark.administrativeArea!)
+                        print(placemark.country!)
+                        print(placemark.name!)
+                        print(placemark.region!)
+
+                         let str = "\(placemark.locality!), \(placemark.administrativeArea!), \(placemark.country!)"
+                        print(str)
+                    }
+                }
+        }
     }
 }
