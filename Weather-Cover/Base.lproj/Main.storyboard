@@ -50,18 +50,35 @@
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="eKq-SN-q1c"/>
-                        <segue destination="gck-C2-tRc" kind="relationship" relationship="viewControllers" id="fMT-oG-wn3"/>
-                        <segue destination="jo7-hd-Tgk" kind="relationship" relationship="viewControllers" id="2PT-lT-KTu"/>
+                        <segue destination="ZoR-fM-ESt" kind="relationship" relationship="viewControllers" id="c9r-Wf-wRR"/>
+                        <segue destination="jo7-hd-Tgk" kind="relationship" relationship="viewControllers" id="uqd-tk-bMr"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eXT-zu-PA4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-306" y="-779"/>
         </scene>
-        <!--View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="VVM-a2-U8W">
+            <objects>
+                <navigationController id="ZoR-fM-ESt" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="network" catalog="system" id="Z67-1I-MDO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uJI-5t-mCQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="gck-C2-tRc" kind="relationship" relationship="rootViewController" id="ZCP-Pf-yM3"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EkN-5G-4qD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-306" y="153"/>
+        </scene>
+        <!--Home View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Weather_Cover" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="HomeViewController" customModule="Weather_Cover" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -70,7 +87,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Igw-cB-zVw">
-                                        <rect key="frame" x="0.0" y="30" width="375" height="124"/>
+                                        <rect key="frame" x="0.0" y="30" width="375" height="164"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="☼ DAILY SUMMARY" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hSA-qr-toK">
                                                 <rect key="frame" x="10" y="10" width="355" height="26.5"/>
@@ -92,10 +109,17 @@
                                                     <constraint firstAttribute="height" constant="64" id="yj8-hO-jGy"/>
                                                 </constraints>
                                             </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="37.5 C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tU5-9M-74Y">
+                                                <rect key="frame" x="144.5" y="109" width="86" height="35"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="29"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="U1j-C7-5FA" secondAttribute="trailing" constant="30" id="2HO-XU-lD3"/>
+                                            <constraint firstItem="tU5-9M-74Y" firstAttribute="centerX" secondItem="Igw-cB-zVw" secondAttribute="centerX" id="36V-oK-idA"/>
                                             <constraint firstItem="hSA-qr-toK" firstAttribute="top" secondItem="Igw-cB-zVw" secondAttribute="top" constant="10" id="4pf-R7-0Bi"/>
                                             <constraint firstAttribute="trailing" secondItem="hSA-qr-toK" secondAttribute="trailing" constant="10" id="Bfp-Do-Sip"/>
                                             <constraint firstItem="hSA-qr-toK" firstAttribute="leading" secondItem="Igw-cB-zVw" secondAttribute="leading" constant="10" id="LAG-wG-IyC"/>
@@ -103,17 +127,18 @@
                                             <constraint firstItem="U1j-C7-5FA" firstAttribute="top" secondItem="hSA-qr-toK" secondAttribute="bottom" constant="15" id="RUk-7F-U2t"/>
                                             <constraint firstItem="U1j-C7-5FA" firstAttribute="centerY" secondItem="IPS-jx-CmF" secondAttribute="centerY" id="bxl-e2-nXP"/>
                                             <constraint firstItem="IPS-jx-CmF" firstAttribute="leading" secondItem="Igw-cB-zVw" secondAttribute="leading" constant="30" id="l0A-Qd-ZdQ"/>
-                                            <constraint firstAttribute="height" constant="124" id="xnm-fk-uhm"/>
+                                            <constraint firstItem="tU5-9M-74Y" firstAttribute="top" secondItem="IPS-jx-CmF" secondAttribute="bottom" constant="15" id="vHG-RI-vlD"/>
+                                            <constraint firstAttribute="height" constant="164" id="xnm-fk-uhm"/>
                                         </constraints>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="XR7-qH-iYa">
-                                        <rect key="frame" x="0.0" y="159" width="375" height="220"/>
+                                        <rect key="frame" x="0.0" y="199" width="375" height="220"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="220" id="my8-bC-tXl"/>
                                         </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="20" id="vB6-wn-cFJ">
+                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="20" id="vB6-wn-cFJ">
                                             <size key="itemSize" width="352" height="205"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -154,7 +179,7 @@
                                         </cells>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UAV-fj-0Xl" customClass="CardUIView" customModule="Weather_Cover" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="379" width="355" height="220"/>
+                                        <rect key="frame" x="10" y="419" width="355" height="220"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5gD-rr-tG5">
                                                 <rect key="frame" x="15" y="15" width="56.5" height="24.5"/>
@@ -287,9 +312,9 @@
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="4KG-4G-Ilp" secondAttribute="trailing" id="8Ub-oV-G2T"/>
                                                             <constraint firstItem="4UM-9K-bPo" firstAttribute="top" secondItem="4KG-4G-Ilp" secondAttribute="bottom" constant="2" id="CgL-OI-abF"/>
-                                                            <constraint firstItem="4KG-4G-Ilp" firstAttribute="leading" relation="lessThanOrEqual" secondItem="DfK-11-0Aa" secondAttribute="leading" constant="36.5" id="Js4-cR-hLh"/>
+                                                            <constraint firstItem="4KG-4G-Ilp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DfK-11-0Aa" secondAttribute="leading" id="EXB-8L-nr2"/>
+                                                            <constraint firstItem="4UM-9K-bPo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DfK-11-0Aa" secondAttribute="leading" id="Tnh-QB-iZZ"/>
                                                             <constraint firstItem="4KG-4G-Ilp" firstAttribute="top" secondItem="DfK-11-0Aa" secondAttribute="top" id="XXS-LU-7cY"/>
-                                                            <constraint firstItem="4UM-9K-bPo" firstAttribute="leading" relation="lessThanOrEqual" secondItem="DfK-11-0Aa" secondAttribute="leading" constant="38.5" id="chX-2Y-kGv"/>
                                                             <constraint firstAttribute="trailing" secondItem="4UM-9K-bPo" secondAttribute="trailing" id="g0O-G6-J9G"/>
                                                         </constraints>
                                                     </view>
@@ -334,6 +359,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="OfY-Lu-dku" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="RbK-tv-swA" secondAttribute="trailing" constant="8" symbolic="YES" id="02Y-dE-Tqz"/>
                                             <constraint firstItem="1oY-av-gqV" firstAttribute="bottom" secondItem="RbK-tv-swA" secondAttribute="bottom" id="4sD-Cd-ZRp"/>
                                             <constraint firstItem="OfY-Lu-dku" firstAttribute="trailing" secondItem="2OX-xC-4pY" secondAttribute="trailing" id="CV7-24-VBG"/>
                                             <constraint firstItem="0L5-Eq-BrY" firstAttribute="leading" secondItem="UAV-fj-0Xl" secondAttribute="leading" constant="25" id="FF7-zF-QKc"/>
@@ -347,7 +373,6 @@
                                             <constraint firstItem="fl6-fN-HO2" firstAttribute="leading" secondItem="5gD-rr-tG5" secondAttribute="leading" id="TDU-XV-vQN"/>
                                             <constraint firstItem="OfY-Lu-dku" firstAttribute="bottom" secondItem="1oY-av-gqV" secondAttribute="bottom" id="TTJ-7H-FCd"/>
                                             <constraint firstItem="5gD-rr-tG5" firstAttribute="top" secondItem="UAV-fj-0Xl" secondAttribute="top" constant="15" id="TrI-fS-JSl"/>
-                                            <constraint firstItem="OfY-Lu-dku" firstAttribute="leading" relation="lessThanOrEqual" secondItem="RbK-tv-swA" secondAttribute="trailing" constant="20" id="Vuw-0s-Uxe"/>
                                             <constraint firstItem="2t5-RG-bbz" firstAttribute="top" secondItem="0L5-Eq-BrY" secondAttribute="bottom" constant="5" id="cyB-Cm-HfJ"/>
                                             <constraint firstItem="2t5-RG-bbz" firstAttribute="trailing" secondItem="2OX-xC-4pY" secondAttribute="trailing" id="dyg-Ki-LAA"/>
                                             <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="5gD-rr-tG5" secondAttribute="trailing" constant="284.5" id="jwV-Gu-zwf"/>
@@ -380,7 +405,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wdx-X5-u3f" customClass="CardUIView" customModule="Weather_Cover" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="609" width="355" height="300"/>
+                                        <rect key="frame" x="10" y="649" width="355" height="300"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hourly Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V3j-k5-Dv0">
                                                 <rect key="frame" x="15" y="15" width="115" height="20.5"/>
@@ -467,7 +492,14 @@
                     <connections>
                         <outlet property="collectionViewTemperature" destination="XR7-qH-iYa" id="IAu-Rd-Wh0"/>
                         <outlet property="imageTodayCondition" destination="U1j-C7-5FA" id="I1P-g9-qxj"/>
+                        <outlet property="labelHumidity" destination="CQF-Ba-PBg" id="yhM-Qc-oKJ"/>
+                        <outlet property="labelPressure" destination="4KG-4G-Ilp" id="v0R-SX-Dvd"/>
+                        <outlet property="labelSensibleTemperature" destination="9bf-W0-Ffg" id="IJR-J1-qh6"/>
+                        <outlet property="labelSunRise" destination="1oY-av-gqV" id="MoT-Ms-AZZ"/>
+                        <outlet property="labelSunSet" destination="OfY-Lu-dku" id="6l1-fK-qlY"/>
                         <outlet property="labelTodayCondition" destination="IPS-jx-CmF" id="ssQ-qt-1Ca"/>
+                        <outlet property="labelTodayTemperature" destination="tU5-9M-74Y" id="Esa-bq-PMb"/>
+                        <outlet property="labelWindDirection" destination="5Tu-Xh-YNr" id="GLg-jf-LIm"/>
                         <outlet property="lableSummarytxt" destination="hSA-qr-toK" id="xuQ-7a-dUJ"/>
                         <outlet property="tableViewTodayTemperature" destination="lrx-gx-dRa" id="8AD-3p-qJI"/>
                         <outlet property="viewOfSummary" destination="Igw-cB-zVw" id="H4V-dF-jSK"/>
@@ -475,7 +507,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1844" y="304.4977511244378"/>
+            <point key="canvasLocation" x="-1146" y="304"/>
         </scene>
         <!--Favorite Cities-->
         <scene sceneID="iHL-vM-Af1">
@@ -486,7 +518,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yyk-L3-PW1">
-                                <rect key="frame" x="0.0" y="120.5" width="375" height="546.5"/>
+                                <rect key="frame" x="0.0" y="164.5" width="375" height="502.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ceH-bu-MlL">
                                     <size key="itemSize" width="128" height="128"/>
@@ -506,7 +538,7 @@
                                 </cells>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ja2-OZ-Zgr" customClass="CardUIView" customModule="Weather_Cover" customModuleProvider="target">
-                                <rect key="frame" x="10" y="15" width="355" height="40.5"/>
+                                <rect key="frame" x="10" y="59" width="355" height="40.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Favorite Cities Current Weather" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dj2-Fp-sOj">
                                         <rect key="frame" x="10" y="10" width="335" height="20.5"/>
@@ -544,7 +576,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bVX-tT-ypH" customClass="CardUIView" customModule="Weather_Cover" customModuleProvider="target">
-                                <rect key="frame" x="107.5" y="70.5" width="160" height="40"/>
+                                <rect key="frame" x="107.5" y="114.5" width="160" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ggh-qE-82n">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="40"/>
@@ -552,6 +584,9 @@
                                         <state key="normal" title="Add City">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onClickAddCity:" destination="gck-C2-tRc" eventType="touchUpInside" id="Nxz-e6-XeV"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>
@@ -600,14 +635,16 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="network" catalog="system" id="Fya-yD-OrV"/>
+                    <navigationItem key="navigationItem" id="rad-B4-YN9"/>
                     <connections>
+                        <outlet property="btnAddCity" destination="Ggh-qE-82n" id="SZU-bd-USm"/>
                         <outlet property="collectionViewCitiesCurrentWeather" destination="yyk-L3-PW1" id="1cB-Ds-PiT"/>
                         <outlet property="labelViewControllerTitle" destination="Dj2-Fp-sOj" id="wRk-XL-B8X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OoT-l2-oUf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-404" y="152.47376311844079"/>
+            <point key="canvasLocation" x="-306" y="923"/>
         </scene>
         <!--User Preference-->
         <scene sceneID="KtL-EE-SKh">
@@ -921,6 +958,9 @@
                                                 <state key="normal" title="Update Preferences">
                                                     <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickUpdate:" destination="eQy-dF-H2h" eventType="touchUpInside" id="ncW-xs-mN6"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemRedColor"/>
@@ -956,7 +996,6 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="s3s-FZ-fFt" firstAttribute="top" secondItem="ngA-O5-btc" secondAttribute="top" constant="15" id="35z-aq-HB1"/>
                                     <constraint firstAttribute="trailing" secondItem="s3s-FZ-fFt" secondAttribute="trailing" constant="10" id="7A7-xP-jH2"/>
                                     <constraint firstItem="XlD-uo-DbH" firstAttribute="centerX" secondItem="Ywj-3M-ftQ" secondAttribute="centerX" id="82p-BS-WPu"/>
                                     <constraint firstItem="s3s-FZ-fFt" firstAttribute="top" secondItem="Ywj-3M-ftQ" secondAttribute="top" constant="15" id="8hC-1O-8ow"/>
@@ -1093,7 +1132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MNU-t2-yIx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1398" y="923"/>
+            <point key="canvasLocation" x="-306" y="1628"/>
         </scene>
     </scenes>
     <designables>
