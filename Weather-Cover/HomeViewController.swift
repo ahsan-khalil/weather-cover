@@ -117,6 +117,7 @@ class HomeViewController: UIViewController {
         if let todayDetailList = todayWeatherDetail?.cityDetail?.forecastDetail {
             if currentForecastIndex == -1 {
                 print("No data for Today")
+                labelTodayTemperature.text = "Please Referesh"
                 // Ask For Internet
             } else {
                 let todayDetail = todayDetailList[currentForecastIndex]
@@ -200,7 +201,10 @@ extension HomeViewController: UICollectionViewDelegate,
         1
     }
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        forecastList.count
+        if forecastList.count == 0 {
+            return 1
+        }
+        return forecastList.count
     }
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -209,40 +213,42 @@ extension HomeViewController: UICollectionViewDelegate,
                                 withReuseIdentifier: WeatherDailyCollectionViewCell.reuseIdentifier,
                                 for: indexPath) as! WeatherDailyCollectionViewCell
         // swiftlint:enable force_cast
-        let forecastToday = forecastList[indexPath.section]
-        cell.labelMaxTemp.text = "\(Int(forecastToday.maxTempC))"
-        cell.labelMinTemp.text = "\(Int(forecastToday.minTempC))"
-        let astro = forecastToday.astronomyModel
-        if astro.timeFormate == .twelveHour {
-            let strSunRise = ConversionUtility.convertTimeToTwelveHourFormate(hour: astro.sunRiseHour,
-                                                                              min: astro.sunRiseMin)
-            cell.labelSunRiseTime.text = strSunRise
-        } else {
-            cell.labelSunRiseTime.text = String(format: "%02d:%02d", astro.sunRiseHour, astro.sunRiseMin)
-        }
-        let tempDate = ConversionUtility.convertDateToStr(formate: "E, d MMM yyyy",
-                                                          date: forecastToday.date)
-        cell.labelToday.text = "\(tempDate)"
-        if currentForecastIndex != -1 {
-            let hour = Constants.getCurrentHourTime()
-            let hourDetail = hourList[hour]
-            cell.labelWeatherCondition.text = hourDetail.conditionText
-            let imageName = hourDetail.iconName
-            cell.imgWeatherCondition.image = WeatherIconUtility.getIcon(imageName: imageName)
-        }
-
-        let currentHour = Constants.getCurrentHourTime()
-        if currentHour <= hourList.count {
-            if indexPath.section == 0 {
-                labelTodayTemperature.text = String(format: "%.2f \(hourList[currentHour].temperatureUnit)",
-                                                    hourList[currentHour].temperatureC)
+        if forecastList.count != 0 {
+            let forecastToday = forecastList[indexPath.section]
+            cell.labelMaxTemp.text = "\(Int(forecastToday.maxTempC))"
+            cell.labelMinTemp.text = "\(Int(forecastToday.minTempC))"
+            let astro = forecastToday.astronomyModel
+            if astro.timeFormate == .twelveHour {
+                let strSunRise = ConversionUtility.convertTimeToTwelveHourFormate(hour: astro.sunRiseHour,
+                                                                                  min: astro.sunRiseMin)
+                cell.labelSunRiseTime.text = strSunRise
+            } else {
+                cell.labelSunRiseTime.text = String(format: "%02d:%02d", astro.sunRiseHour, astro.sunRiseMin)
             }
-            cell.labelRainChance.text = "\(hourList[currentHour].rainChances)" + "%"
-            cell.labelWindSpeed.text = String(format: "%0.2f \(hourList[currentHour].speedUnit)",
-                                              hourList[currentHour].windSpeedMPH)
-        }
-        if let todayWeather = todayWeatherDetail {
-            cell.labelCityName.text = todayWeather.cityName + ", " + todayWeather.countryName
+            let tempDate = ConversionUtility.convertDateToStr(formate: "E, d MMM yyyy",
+                                                              date: forecastToday.date)
+            cell.labelToday.text = "\(tempDate)"
+            if currentForecastIndex != -1 {
+                let hour = Constants.getCurrentHourTime()
+                let hourDetail = hourList[hour]
+                cell.labelWeatherCondition.text = hourDetail.conditionText
+                let imageName = hourDetail.iconName
+                cell.imgWeatherCondition.image = WeatherIconUtility.getIcon(imageName: imageName)
+            }
+
+            let currentHour = Constants.getCurrentHourTime()
+            if currentHour <= hourList.count {
+                if indexPath.section == 0 {
+                    labelTodayTemperature.text = String(format: "%.2f \(hourList[currentHour].temperatureUnit)",
+                                                        hourList[currentHour].temperatureC)
+                }
+                cell.labelRainChance.text = "\(hourList[currentHour].rainChances)" + "%"
+                cell.labelWindSpeed.text = String(format: "%0.2f \(hourList[currentHour].speedUnit)",
+                                                  hourList[currentHour].windSpeedMPH)
+            }
+            if let todayWeather = todayWeatherDetail {
+                cell.labelCityName.text = todayWeather.cityName + ", " + todayWeather.countryName
+            }
         }
         return cell
     }
