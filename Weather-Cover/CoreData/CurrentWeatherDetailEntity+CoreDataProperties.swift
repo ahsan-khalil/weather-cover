@@ -2,7 +2,7 @@
 //  CurrentWeatherDetailEntity+CoreDataProperties.swift
 //  Weather-Cover
 //
-//  Created by Ahsan Khalil🤕 on 09/11/2020.
+//  Created by Ahsan Khalil🤕 on 12/11/2020.
 //
 //
 
@@ -16,9 +16,9 @@ extension CurrentWeatherDetailEntity {
         return NSFetchRequest<CurrentWeatherDetailEntity>(entityName: "CurrentWeatherDetailEntity")
     }
 
+    @NSManaged public var humidity: Int32
     @NSManaged public var temperatureC: Double
     @NSManaged public var timeFetched: Date?
-    @NSManaged public var humidity: Int32
     @NSManaged public var cityDetail: CityDetailEntity?
 
 }
