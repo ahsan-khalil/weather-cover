@@ -6,6 +6,7 @@
 //
 //  swiftlint:disable all
 import Foundation
+import CoreData
 class CoreDataRepository {
     static let soureceFileName = #file
     /// Get User Entity Data
@@ -110,6 +111,11 @@ class CoreDataRepository {
             for favoriteCityEntity in favoriteCityEntityList {
                 if favoriteCityEntity.cityName == cityName {
                     context.delete(favoriteCityEntity)
+                }
+                do {
+                    try context.save()
+                } catch {
+                    print("error occured in deleting city")
                 }
             }
         } catch {
@@ -439,6 +445,17 @@ class CoreDataRepository {
 
         }
         return favoriteCityModelList
+    }
+    public static func deleteAllDataBefore(date: Date) {
+        let context = RepositoryUtility.getWeatherCoverContainerContext()
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ForecastDetailEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "forecastDate < %@", date as NSDate)
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try context.execute(batchDeleteRequest)
+        } catch {
+            print("error occured in deleting city")
+        }
     }
 }
 //  swiftlint:enable all
