@@ -116,4 +116,25 @@ class ControllerRepository {
         }
         return true
     }
+    static func updateCityData(cityName: String, totalForecastDays: Int = 3,
+                               completionHandler: @escaping (Bool) -> Void) {
+        let handler: WeatherAPI.WeatherForecastHandler = { (weatherForecastAPIModel) in
+            print("printing from operation main")
+            if weatherForecastAPIModel == nil {
+                print("Operation got nil value from API")
+                completionHandler(false)
+                return
+            }
+            if let weatherForecastModel = WeatherAPIModelConverter.convertToFavoriteCityModel(
+                            providedAPIModel: weatherForecastAPIModel!) {
+                print("got api model")
+                CoreDataRepository.updateCityData(favoriteCityModel: weatherForecastModel)
+                completionHandler(true)
+            } else {
+                print("can't convert properly")
+                completionHandler(false)
+            }
+        }
+        WeatherAPI.getFutureForecast(days: totalForecastDays, value: cityName, completionHandler: handler)
+    }
 }
