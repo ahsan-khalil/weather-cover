@@ -8,6 +8,7 @@
 import UIKit
 import CoreLocation
 import MapKit
+import Toast_Swift
 
 class HomeViewController: UIViewController {
     static let identifier = "HomeViewController"
@@ -67,6 +68,14 @@ class HomeViewController: UIViewController {
     private func loadData() {
         if viewControllerMode == .homeMode {
             if ControllerRepository.isDefaultCityExists() {
+                todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
+                if let cityName = todayWeatherDetail?.cityName {
+                    let fetchDate = todayWeatherDetail?.cityDetail?.currentWeatherDetail?.timeFetched
+                    let hours = Constants.getHourDiff(startDate: fetchDate ?? Date(), endDate: Date())
+                    if hours >= Constants.minRefereshWeatherTime {
+                        updateWeatherFromInternet(cityName: cityName)
+                    }
+                }
                 loadDataInUI()
             } else {
                 // ask for location
@@ -84,8 +93,31 @@ class HomeViewController: UIViewController {
             initializeCurrentHourDetail()
         }
     }
+    private func updateWeatherFromInternet(cityName: String) {
+        let loadingview = UILabel(frame: CGRect(origin: CGPoint(x: 0, y: 20),
+                                         size: CGSize(width: self.view.bounds.width,
+                                                      height: 20)))
+        loadingview.text = "Updating Weather"
+        loadingview.textAlignment = .center
+        loadingview.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        loadingview.backgroundColor = #colorLiteral(red: 0.3764262497, green: 0.3764960766, blue: 0.3764218688, alpha: 0.5)
+        view.addSubview(loadingview)
+        DispatchQueue.main.async {
+            ControllerRepository.updateCityData(cityName: cityName) { (flag) in
+                if flag {
+                    self.todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
+                    self.view.makeToast("Updated", duration: 1.0, position: .bottom)
+                    self.loadDataInUI()
+                    self.collectionViewTemperature.reloadData()
+                    self.tableViewTodayTemperature.reloadData()
+                } else {
+                    self.view.makeToast("Error Occured in update", duration: 1.0, position: .bottom)
+                }
+                loadingview.removeFromSuperview()
+            }
+        }
+    }
     private func loadDataInUI() {
-        todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
         setTodayForecastIndex()
         // initialize Today Data
         initializeCurrentData()
@@ -291,24 +323,6 @@ extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             print(location.coordinate.latitude, location.coordinate.longitude)
-            let geocoder = CLGeocoder()
-                geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
-                    if error != nil {
-                        print("error in reverseGeocode")
-                    }
-                    let placemark = placemarks! as [CLPlacemark]
-                    if placemark.count>0 {
-                        let placemark = placemarks![0]
-                        print(placemark.locality!)
-                        print(placemark.administrativeArea!)
-                        print(placemark.country!)
-                        print(placemark.name!)
-                        print(placemark.region!)
-
-                         let str = "\(placemark.locality!), \(placemark.administrativeArea!), \(placemark.country!)"
-                        print(str)
-                    }
-                }
         }
     }
 }

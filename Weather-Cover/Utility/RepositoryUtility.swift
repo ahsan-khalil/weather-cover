@@ -20,6 +20,9 @@ class RepositoryUtility {
     static func getWeatherCoverContainerContext() -> NSManagedObjectContext {
         return self.weatherCoverContainer.viewContext
     }
+    static func getWeatherCoverContainBGContext() -> NSManagedObjectContext {
+        return self.weatherCoverContainer.newBackgroundContext()
+    }
     static func saveContext() {
         let context = self.getWeatherCoverContainerContext()
         if context.hasChanges {
