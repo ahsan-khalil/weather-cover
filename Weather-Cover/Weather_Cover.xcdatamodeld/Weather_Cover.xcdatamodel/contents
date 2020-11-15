@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CityDetailEntity" representedClassName="CityDetailEntity" syncable="YES">
-        <relationship name="currentDetail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrentWeatherDetailEntity" inverseName="cityDetail" inverseEntity="CurrentWeatherDetailEntity"/>
+        <relationship name="currentDetail" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CurrentWeatherDetailEntity" inverseName="cityDetail" inverseEntity="CurrentWeatherDetailEntity"/>
         <relationship name="favoriteCity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteCityEntity" inverseName="cityDetail" inverseEntity="FavoriteCityEntity"/>
-        <relationship name="forecastDetail" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ForecastDetailEntity" inverseName="cityDetail" inverseEntity="ForecastDetailEntity"/>
+        <relationship name="forecastDetail" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ForecastDetailEntity" inverseName="cityDetail" inverseEntity="ForecastDetailEntity"/>
     </entity>
     <entity name="CurrentWeatherDetailEntity" representedClassName="CurrentWeatherDetailEntity" syncable="YES">
         <attribute name="humidity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -14,7 +14,7 @@
     <entity name="FavoriteCityEntity" representedClassName="FavoriteCityEntity" syncable="YES">
         <attribute name="cityName" optional="YES" attributeType="String"/>
         <attribute name="countryName" optional="YES" attributeType="String"/>
-        <relationship name="cityDetail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CityDetailEntity" inverseName="favoriteCity" inverseEntity="CityDetailEntity"/>
+        <relationship name="cityDetail" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CityDetailEntity" inverseName="favoriteCity" inverseEntity="CityDetailEntity"/>
     </entity>
     <entity name="ForecastDetailEntity" representedClassName="ForecastDetailEntity" syncable="YES">
         <attribute name="forecastDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -31,7 +31,7 @@
         <attribute name="sunSetHour" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="sunsetMin" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="cityDetail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CityDetailEntity" inverseName="forecastDetail" inverseEntity="CityDetailEntity"/>
-        <relationship name="hourForecastDetail" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="HourForecastDetailEntity" inverseName="forecastDetail" inverseEntity="HourForecastDetailEntity"/>
+        <relationship name="hourForecastDetail" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="HourForecastDetailEntity" inverseName="forecastDetail" inverseEntity="HourForecastDetailEntity"/>
     </entity>
     <entity name="HourForecastDetailEntity" representedClassName="HourForecastDetailEntity" syncable="YES">
         <attribute name="conditionText" optional="YES" attributeType="String"/>
@@ -61,7 +61,7 @@
         <attribute name="night" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="CityDetailEntity" positionX="18" positionY="162" width="128" height="28"/>
+        <element name="CityDetailEntity" positionX="18" positionY="162" width="128" height="88"/>
         <element name="CurrentWeatherDetailEntity" positionX="0" positionY="153" width="128" height="103"/>
         <element name="FavoriteCityEntity" positionX="36" positionY="171" width="128" height="88"/>
         <element name="ForecastDetailEntity" positionX="-18" positionY="72" width="128" height="268"/>
