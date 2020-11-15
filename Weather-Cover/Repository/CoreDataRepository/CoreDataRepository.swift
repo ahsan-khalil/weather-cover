@@ -134,7 +134,7 @@ class CoreDataRepository {
             let currentWeatherEntity = CurrentWeatherDetailEntity.init(context: context)
             if let currentDetailModel = favoriteCityModel.cityDetail?.currentWeatherDetail {
                 currentWeatherEntity.temperatureC = currentDetailModel.temperatureC
-                currentWeatherEntity.timeFetched = currentDetailModel.timeFetched
+                currentWeatherEntity.timeFetched = Date()
             } else {
                 Constants.printError(filename: soureceFileName, errorStr: "Current Weather Detail Model is null")
                 //return false
@@ -434,15 +434,16 @@ class CoreDataRepository {
                     // Get Forecast Detail
                     let cityName = favoriteCityEntity.cityName!
                     let countryName = favoriteCityEntity.countryName!
-                    let forecastModelList: [ForeCastDetailModel]? = getForecastModelList(forecastDetailEntityList: favoriteCityEntity.cityDetail?.forecastDetail, day: day)
-                    let cityDetailModel = CityDetailModel(currentWeatherDetail: currentWeaherModel, forecastDetail: forecastModelList)
-                    let favoriteCityModel = FavoriteCityModel(cityName: cityName, countryName: countryName, cityDetail: cityDetailModel)
-                    favoriteCityModelList.append(favoriteCityModel)
+                    if let forecastModelList: [ForeCastDetailModel] = getForecastModelList(forecastDetailEntityList: favoriteCityEntity.cityDetail?.forecastDetail, day: day) {
+                    
+                        let cityDetailModel = CityDetailModel(currentWeatherDetail: currentWeaherModel, forecastDetail: forecastModelList)
+                        let favoriteCityModel = FavoriteCityModel(cityName: cityName, countryName: countryName, cityDetail: cityDetailModel)
+                        favoriteCityModelList.append(favoriteCityModel)
+                    }
                 }
             }
         } catch {
             Constants.printError(filename: soureceFileName, errorStr: "Error Occured in reteriving favorite city list")
-
         }
         return favoriteCityModelList
     }
@@ -455,6 +456,81 @@ class CoreDataRepository {
             try context.execute(batchDeleteRequest)
         } catch {
             print("error occured in deleting city")
+        }
+    }
+    public static func deleteAllData(cityName: String) {
+        let context = RepositoryUtility.getWeatherCoverContainBGContext()
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavoriteCityEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "cityName = %@", cityName)
+        do {
+            if let citylist =  try! context.fetch(fetchRequest) as? [FavoriteCityEntity] {
+                for city in citylist {
+                    context.delete(city.cityDetail!)
+                }
+                try context.save()
+            }
+        } catch {
+            print("error occured deletion of all data of city name: \(cityName)")
+        }
+    }
+    
+    public static func updateCityData(favoriteCityModel: FavoriteCityModel) {
+        let context = RepositoryUtility.getWeatherCoverContainBGContext()
+        deleteAllData(cityName: favoriteCityModel.cityName)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavoriteCityEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "cityName = %@", favoriteCityModel.cityName)
+        do {
+            if let citylist =  try! context.fetch(fetchRequest) as? [FavoriteCityEntity], citylist.count != 0 {
+                let cityEntity = citylist[0]
+                let cityDetailEntity = CityDetailEntity.init(context: context)
+                let currentWeatherEntity = CurrentWeatherDetailEntity.init(context: context)
+                if let currentDetailModel = favoriteCityModel.cityDetail?.currentWeatherDetail {
+                    currentWeatherEntity.temperatureC = currentDetailModel.temperatureC
+                    currentWeatherEntity.timeFetched = Date()
+                } else {
+                    Constants.printError(filename: soureceFileName, errorStr: "Current Weather Detail Model is null")
+                    //return false
+                }
+                if let forecastDetailList = favoriteCityModel.cityDetail?.forecastDetail {
+                    for forecastDetail in forecastDetailList {
+                        let forecastEntity = ForecastDetailEntity.init(context: context)
+                        forecastEntity.sunRiseHour = forecastDetail.astronomyModel.sunRiseHour
+                        forecastEntity.sunRiseMin = forecastDetail.astronomyModel.sunRiseMin
+                        forecastEntity.sunSetHour = forecastDetail.astronomyModel.sunSetHour
+                        forecastEntity.sunsetMin = forecastDetail.astronomyModel.sunSetMin
+                        forecastEntity.minTempC = forecastDetail.minTempC
+                        forecastEntity.maxTempC = forecastDetail.maxTempC
+                        forecastEntity.forecastDate = forecastDetail.date
+                       
+                        if let hourModelList = forecastDetail.hourDetailList {
+                            for hourModel in hourModelList {
+                                let hourDetailEntity = HourForecastDetailEntity.init(context: context)
+                                hourDetailEntity.dateTime = hourModel.dateTime
+                                hourDetailEntity.rainChances = hourModel.rainChances
+                                hourDetailEntity.temperatureC = hourModel.temperatureC
+                                hourDetailEntity.windspeedMPH = hourModel.windSpeedMPH
+                                hourDetailEntity.conditionText = hourModel.conditionText
+                                hourDetailEntity.iconName = hourModel.iconName
+                                hourDetailEntity.pressureIN = hourModel.pressureIN
+                                hourDetailEntity.humidity = hourModel.humidity
+                                hourDetailEntity.feelsLikeTempC = hourModel.feelsLikeTempC
+                                hourDetailEntity.windDirection = hourModel.windDirection
+                                forecastEntity.addToHourForecastDetail(hourDetailEntity)
+                            }
+                        } else {
+                            Constants.printError(filename: soureceFileName, errorStr: "Current Weather Detail Model hour list is null")
+                            //return false
+                        }
+                        cityDetailEntity.addToForecastDetail(forecastEntity)
+                        cityDetailEntity.currentDetail = currentWeatherEntity
+                        //cityDetailEntity.favoriteCity = cityEntity
+                    }
+                    cityEntity.cityDetail = cityDetailEntity
+                    try context.save()
+                }
+            }
+        } catch {
+            print("error occured updating of all data of city name: \(favoriteCityModel.cityName)")
         }
     }
 }
