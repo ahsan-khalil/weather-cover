@@ -17,6 +17,7 @@ class HomeViewController: UIViewController {
         case homeMode
         case individualCityDetailMode
     }
+    @IBOutlet weak var scrollview: UIScrollView!
     @IBOutlet weak var lableSummarytxt: UILabel!
     @IBOutlet weak var labelTodayCondition: UILabel!
     @IBOutlet weak var imageTodayCondition: UIImageView!
@@ -31,6 +32,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var labelSunRise: UILabel!
     @IBOutlet weak var labelSunSet: UILabel!
     var currentForecastIndex = -1
+    var refreshControl = UIRefreshControl()
     var todayWeatherDetail: FavoriteCityModel?
     var hourList = [HourForecastDetailModel]()
     var forecastList = [ForeCastDetailModel]()
@@ -47,9 +49,12 @@ class HomeViewController: UIViewController {
         setUserLocationData()
     }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if viewControllerMode == .individualCityDetailMode {
             self.navigationController?.setNavigationBarHidden(false, animated: false)
         }
+        //refreshControl = UIRefreshControl()
+        addPullRefereshToUI()
     }
     private func setUserLocationData() {
         locationManager = CLLocationManager()
@@ -82,15 +87,7 @@ class HomeViewController: UIViewController {
             }
             todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
         } else if viewControllerMode == .individualCityDetailMode {
-            setTodayForecastIndex()
-            // initialize Today Data
-            initializeCurrentData()
-            // initialize Hour Data
-            initializeHourForecastData()
-            // initialize Forecast List
-            initializeForecastList()
-            // initalize Current Hour Detail Data
-            initializeCurrentHourDetail()
+            loadDataInUI()
         }
     }
     private func updateWeatherFromInternet(cityName: String) {
@@ -115,6 +112,32 @@ class HomeViewController: UIViewController {
                 }
                 loadingview.removeFromSuperview()
             }
+        }
+    }
+    private func addPullRefereshToUI() {
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh")
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        scrollview.refreshControl = refreshControl
+    }
+    @objc func refresh(sender: AnyObject) {
+        if let cityName = todayWeatherDetail?.cityName {
+            DispatchQueue.main.async {
+                ControllerRepository.updateCityData(cityName: cityName) { (flag) in
+                    if flag {
+                        self.todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
+                        self.view.makeToast("Updated", duration: 1.0, position: .bottom)
+                        self.loadDataInUI()
+                        self.collectionViewTemperature.reloadData()
+                        self.tableViewTodayTemperature.reloadData()
+                    } else {
+                        self.view.makeToast("Error Occured in update", duration: 1.0, position: .bottom)
+                    }
+                    self.refreshControl.endRefreshing()
+                }
+            }
+        } else {
+            view.makeToast("Can't Referesh. Add City First", duration: 1, position: .bottom)
+            refreshControl.endRefreshing()
         }
     }
     private func loadDataInUI() {
