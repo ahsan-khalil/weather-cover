@@ -10,6 +10,9 @@ import UIKit
 import DropDown
 struct Constants {
     static let PlacesAPIKey = "AIzaSyAC20gS8mRGFZq_8EmhJxkRysOpfZUDpU4"
+    static let BackgroundRefereshDataID = "com.ahsan.weathercover.refereshdata"
+    static let BackgroundDataCleanID = "com.ahsan.weathercover.dbcleaning"
+    static let minRefereshWeatherTime = 2
     typealias DropDownHandler = (_ index: Int, _ title: String) -> Void
     public static func getNotFoundImage() -> UIImage {
         return UIImage(named: "WeatherCondition/day/119")!
@@ -46,5 +49,10 @@ struct Constants {
     public static func getCurrentHourTime() -> Int {
         let hour = Calendar.current.component(.hour, from: Date())
         return hour
+    }
+    public static func getHourDiff(startDate: Date, endDate: Date) -> Int {
+        let diffComponents = Calendar.current.dateComponents([.hour], from: startDate, to: endDate)
+        let hours = diffComponents.hour
+        return hours ?? -1
     }
 }
