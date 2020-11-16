@@ -9,6 +9,7 @@ import UIKit
 import CoreLocation
 import MapKit
 import Toast_Swift
+import Network
 
 class HomeViewController: UIViewController {
     static let identifier = "HomeViewController"
@@ -36,6 +37,16 @@ class HomeViewController: UIViewController {
     var todayWeatherDetail: FavoriteCityModel?
     var hourList = [HourForecastDetailModel]()
     var forecastList = [ForeCastDetailModel]()
+    let monitor = NWPathMonitor()
+    var isInternetAvailable = false {
+        didSet {
+            if isInternetAvailable {
+                print("true")
+            } else {
+                print("false")
+            }
+        }
+    }
     var viewControllerMode = CurrentMode.homeMode
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +57,17 @@ class HomeViewController: UIViewController {
         tableViewTodayTemperature.register(HourlyForecastTableViewCell.nib(),
                                            forCellReuseIdentifier: HourlyForecastTableViewCell.reuseIdentifier)
         loadData()
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("We're connected!")
+                self.isInternetAvailable = true
+            } else {
+                print("No connection.")
+                self.isInternetAvailable = false
+            }
+        }
+        let queue = DispatchQueue(label: "internetTesting")
+        monitor.start(queue: queue)
         setUserLocationData()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -102,7 +124,7 @@ class HomeViewController: UIViewController {
         DispatchQueue.main.async {
             ControllerRepository.updateCityData(cityName: cityName) { (flag) in
                 if flag {
-                    self.todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
+                    self.todayWeatherDetail = ControllerRepository.getCityForecastData(cityName: cityName)
                     self.view.makeToast("Updated", duration: 1.0, position: .bottom)
                     self.loadDataInUI()
                     self.collectionViewTemperature.reloadData()
@@ -124,7 +146,7 @@ class HomeViewController: UIViewController {
             DispatchQueue.main.async {
                 ControllerRepository.updateCityData(cityName: cityName) { (flag) in
                     if flag {
-                        self.todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
+                        self.todayWeatherDetail = ControllerRepository.getCityForecastData(cityName: cityName)
                         self.view.makeToast("Updated", duration: 1.0, position: .bottom)
                         self.loadDataInUI()
                         self.collectionViewTemperature.reloadData()
