@@ -56,7 +56,6 @@ class HomeViewController: UIViewController {
                                            forCellWithReuseIdentifier: WeatherDailyCollectionViewCell.reuseIdentifier)
         tableViewTodayTemperature.register(HourlyForecastTableViewCell.nib(),
                                            forCellReuseIdentifier: HourlyForecastTableViewCell.reuseIdentifier)
-        loadData()
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
                 print("We're connected!")
@@ -69,6 +68,7 @@ class HomeViewController: UIViewController {
         let queue = DispatchQueue(label: "internetTesting")
         monitor.start(queue: queue)
         setUserLocationData()
+        loadData()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -94,7 +94,26 @@ class HomeViewController: UIViewController {
     }
     private func loadData() {
         if viewControllerMode == .homeMode {
-            if ControllerRepository.isDefaultCityExists() {
+            if isInternetAvailable && CLLocationManager.locationServicesEnabled() {
+                let loadingview = UILabel(frame: CGRect(origin: CGPoint(x: 0, y: 20),
+                                                 size: CGSize(width: self.view.bounds.width,
+                                                              height: 20)))
+                loadingview.text = "Updating from Internet"
+                loadingview.textAlignment = .center
+                loadingview.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                loadingview.backgroundColor = #colorLiteral(red: 0.3764262497, green: 0.3764960766, blue: 0.3764218688, alpha: 0.5)
+                view.addSubview(loadingview)
+                let lat: Double = locationManager?.location?.coordinate.latitude ?? 0
+                let long: Double = locationManager?.location?.coordinate.longitude ?? 0
+                ControllerRepository.getWeatherForecastFromInternet(latitute: lat, longitute: long) { (cityData) in
+                    if cityData != nil {
+                        self.todayWeatherDetail = cityData
+                        self.loadDataInUI()
+                        loadingview.removeFromSuperview()
+                    }
+                }
+            }
+            if ControllerRepository.isDefaultCityExists() && todayWeatherDetail == nil {
                 todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
                 if let cityName = todayWeatherDetail?.cityName {
                     let fetchDate = todayWeatherDetail?.cityDetail?.currentWeatherDetail?.timeFetched
@@ -104,8 +123,6 @@ class HomeViewController: UIViewController {
                     }
                 }
                 loadDataInUI()
-            } else {
-                // ask for location
             }
             todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
         } else if viewControllerMode == .individualCityDetailMode {
@@ -142,7 +159,20 @@ class HomeViewController: UIViewController {
         scrollview.refreshControl = refreshControl
     }
     @objc func refresh(sender: AnyObject) {
-        if let cityName = todayWeatherDetail?.cityName {
+        if isInternetAvailable && CLLocationManager.locationServicesEnabled() {
+            let lat: Double = locationManager?.location?.coordinate.latitude ?? 0
+            let long: Double = locationManager?.location?.coordinate.longitude ?? 0
+            ControllerRepository.getWeatherForecastFromInternet(latitute: lat, longitute: long) { (cityData) in
+                if cityData != nil {
+                    self.todayWeatherDetail = cityData
+                    self.loadDataInUI()
+                    self.view.makeToast("Updated", duration: 1.0, position: .bottom)
+                } else {
+                    self.view.makeToast("Error Occured in update", duration: 1.0, position: .bottom)
+                }
+                self.refreshControl.endRefreshing()
+            }
+        } else if let cityName = todayWeatherDetail?.cityName {
             DispatchQueue.main.async {
                 ControllerRepository.updateCityData(cityName: cityName) { (flag) in
                     if flag {

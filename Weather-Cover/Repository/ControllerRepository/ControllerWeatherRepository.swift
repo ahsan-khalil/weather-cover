@@ -137,4 +137,25 @@ class ControllerRepository {
         }
         WeatherAPI.getFutureForecast(days: totalForecastDays, value: cityName, completionHandler: handler)
     }
+    static func getWeatherForecastFromInternet(latitute: Double, longitute: Double, completionHandler: @escaping (_ cityData: FavoriteCityModel?) -> Void) {
+        let str = "\(latitute),\(longitute)"
+        let handler: WeatherAPI.WeatherForecastHandler = { (weatherForecastAPIModel) in
+            print("printing from operation main")
+            if weatherForecastAPIModel == nil {
+                print("Operation got nil value from API")
+                completionHandler(nil)
+                return
+            }
+            if let weatherForecastModel = WeatherAPIModelConverter.convertToFavoriteCityModel(
+                            providedAPIModel: weatherForecastAPIModel!) {
+                print("got api model")
+                CoreDataRepository.updateCityData(favoriteCityModel: weatherForecastModel)
+                completionHandler(weatherForecastModel)
+            } else {
+                print("can't convert properly")
+                completionHandler(nil)
+            }
+        }
+        WeatherAPI.getFutureForecast(days: 3, value: str, completionHandler: handler)
+    }
 }
