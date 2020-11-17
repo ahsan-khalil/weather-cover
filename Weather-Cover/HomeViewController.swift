@@ -38,15 +38,7 @@ class HomeViewController: UIViewController {
     var hourList = [HourForecastDetailModel]()
     var forecastList = [ForeCastDetailModel]()
     let monitor = NWPathMonitor()
-    var isInternetAvailable = false {
-        didSet {
-            if isInternetAvailable {
-                print("true")
-            } else {
-                print("false")
-            }
-        }
-    }
+    var isInternetAvailable = false
     var viewControllerMode = CurrentMode.homeMode
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,8 +104,7 @@ class HomeViewController: UIViewController {
                         loadingview.removeFromSuperview()
                     }
                 }
-            }
-            if ControllerRepository.isDefaultCityExists() && todayWeatherDetail == nil {
+            } else if ControllerRepository.isDefaultCityExists() && todayWeatherDetail == nil {
                 todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
                 if let cityName = todayWeatherDetail?.cityName {
                     let fetchDate = todayWeatherDetail?.cityDetail?.currentWeatherDetail?.timeFetched
@@ -124,7 +115,6 @@ class HomeViewController: UIViewController {
                 }
                 loadDataInUI()
             }
-            todayWeatherDetail = ControllerRepository.getDefaultCityWeatherData()
         } else if viewControllerMode == .individualCityDetailMode {
             loadDataInUI()
         }
