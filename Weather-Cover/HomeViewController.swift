@@ -149,7 +149,7 @@ class HomeViewController: UIViewController {
         scrollview.refreshControl = refreshControl
     }
     @objc func refresh(sender: AnyObject) {
-        if isInternetAvailable && CLLocationManager.locationServicesEnabled() {
+        if isInternetAvailable && CLLocationManager.locationServicesEnabled() && viewControllerMode == .homeMode {
             let lat: Double = locationManager?.location?.coordinate.latitude ?? 0
             let long: Double = locationManager?.location?.coordinate.longitude ?? 0
             ControllerRepository.getWeatherForecastFromInternet(latitute: lat, longitute: long) { (cityData) in
